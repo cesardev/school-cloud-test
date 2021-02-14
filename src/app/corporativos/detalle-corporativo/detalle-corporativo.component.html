@@ -1,0 +1,322 @@
+<section class="users-edit">
+   <div class="row d-flex justify-content-center">
+      <div [ngClass]="sizeContainerDetail">
+         <div class="card">
+            <div class="card-content" *ngIf="corporateDetail">
+               <div class="card-body">
+                  <!-- Nav-tabs -->
+                  <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-left"
+                     (navChange)="changeTab( $event )">
+
+                     <!-- TAB DATOS GENERALES -->
+                     <li [ngbNavItem]="1">
+                        <a ngbNavLink class="nav-link d-flex align-items-center">
+                           <i class="ft-file mr-1"></i>
+                           <span class="d-none d-sm-block">Datos generales</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                           <!-- Account content starts -->
+                           <div class="mt-2" id="account">
+                              <!-- Media object starts -->
+                              <div class="media">
+                                 <img [src]="corporateDetail.corporativo.S_LogoURL" alt="user edit avatar"
+                                    class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                                 <div class="media-body">
+                                    <h4>{{ corporateDetail.corporativo.S_NombreCorto }}</h4>
+                                    <span class="text-muted">
+                                       {{ corporateDetail.corporativo.S_NombreCompleto }}
+                                    </span>
+                                 </div>
+                              </div>
+                              <!-- Media object ends -->
+
+                              <!-- FORMULARIO DATOS GENERALES -->
+                              <form [formGroup]="generalForm" novalidate class="mt-4">
+                                 <div class="row">
+
+                                    <!-- NOMBRE CORTO -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="short-name">NOMBRE CORTO</label>
+                                             <input type="text" id="nombre-corto" class="form-control"
+                                                formControlName="shortName" placeholder="Nombre corto" value=""
+                                                aria-invalid="false">
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- NOMBRE COMPLETO -->
+                                    <div class="col-md-6">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="full-name">NOMBRE COMPLETO</label>
+                                             <input type="text" id="full-name" class="form-control"
+                                                formControlName="fullName" placeholder="Nombre completo" value=""
+                                                aria-invalid="false">
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- STATUS -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="status">Status *</label>
+                                             <select id="status" class="form-control" formControlName="status" required>
+                                                <option value="">Seleccione status</option>
+                                                <option value="1">Activo</option>
+                                                <option value="0">Inactivo</option>
+                                             </select>
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="genFrm.status.touched && genFrm.status.invalid">
+                                             El status es requerido
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- FECHA DE INCORPORACIÓN -->
+                                    <div class="col-3">
+                                       <div class="form-group">
+                                          <label for="incorporation-date">FECHA DE INCORPORACIÓN *</label>
+                                          <div class="input-group">
+                                             <input type="text" id="incorporation-date" class="form-control"
+                                                placeholder="yyyy-mm-dd" name="dp" formControlName="incorporationDate"
+                                                ngbDatepicker #d2="ngbDatepicker" readonly />
+                                             <div class="input-group-append">
+                                                <div class="input-group-text cursor-pointer"
+                                                   (click)="genFrm.incorporationDate.enabled ? d2.toggle() : null">
+                                                   <i class="fa fa-calendar"></i>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="genFrm.incorporationDate.touched && genFrm.incorporationDate.invalid">
+                                             La fecha de incorporación es requerida
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- URL DEL SISTEMA -->
+                                    <div class="col-6">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="system-url">URL DEL SISTEMA *</label>
+                                             <input type="text" id="system-url" class="form-control"
+                                                formControlName="systemUrl" placeholder="Url del sistema">
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="genFrm.systemUrl.touched && genFrm.systemUrl.invalid">
+                                             La url del sistema es requerida
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- BOTONES -->
+                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                       <button type="button" class="btn btn-secondary mr-2"
+                                          [routerLink]="['/corporativos']">
+                                          Regresar
+                                       </button>
+                                       <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                          (click)="generalForm.enable()" *ngIf="generalForm.disabled">
+                                          Editar
+                                       </button>
+                                       <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2"
+                                          (click)="updateCorporateDetail()" *ngIf="generalForm.enabled"
+                                          [disabled]="generalForm.invalid">
+                                          Guardar cambios
+                                       </button>
+                                    </div>
+                                 </div>
+                              </form>
+                              <!-- Account form ends -->
+                           </div>
+                           <!-- Account content ends -->
+                        </ng-template>
+                     </li>
+
+                     <!-- TAB CONTACTOS -->
+                     <li [ngbNavItem]="2">
+                        <a ngbNavLink class="nav-link d-flex align-items-center">
+                           <i class="ft-users mr-1"></i>
+                           <span class="d-none d-sm-block">Contactos</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                           <!-- Information content starts -->
+                           <div class="mt-2" id="information">
+                              <!-- Media object starts -->
+                              <div class="media">
+                                 <img [src]="corporateDetail.corporativo.S_LogoURL" alt="user edit avatar"
+                                    class="users-avatar-shadow avatar mr-3 rounded-circle" height="64" width="64">
+                                 <div class="media-body">
+                                    <h4>{{ corporateDetail.corporativo.S_NombreCorto }}</h4>
+                                    <span class="text-muted">
+                                       {{ corporateDetail.corporativo.S_NombreCompleto }}
+                                    </span>
+                                 </div>
+                              </div>
+                              <!-- Media object ends -->
+
+                              <!-- TABLA DE CONTACTOS -->
+                              <table class="table table-striped table-detalle-corp table-responsive mt-4">
+                                 <thead>
+                                    <tr>
+                                       <th>NOMBRE</th>
+                                       <th>PUESTO</th>
+                                       <th>TELÉFONO</th>
+                                       <th>CELULAR</th>
+                                       <th>EMAIL</th>
+                                       <th>OBSERVACIONES</th>
+                                       <th class="text-center">ACCIONES</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let contact of lstCorpContacts">
+                                       <td>{{ contact.S_Nombre }}</td>
+                                       <td>{{ contact.S_Puesto }}</td>
+                                       <td>{{ contact.N_TelefonoFijo }}</td>
+                                       <td>{{ contact.N_TelefonoMovil }}</td>
+                                       <td>{{ contact.S_Email }}</td>
+                                       <td>{{ contact.S_Comentarios }}</td>
+                                       <td class="text-center">
+                                          <i class="ft-edit mr-2 fw-800 cursor-pointer"
+                                             (click)="editContact( contact )">
+                                          </i>
+                                          <i class="ft-trash-2 fw-800 cursor-pointer"
+                                             (click)="deleteContact( contact.id )">
+                                          </i>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+
+                              <!-- FORMULARIO CONTACTOS -->
+                              <form novalidate [formGroup]="contactsForm" class="mt-4">
+                                 <div class="row">
+
+                                    <!-- NOMBRE -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="name">NOMBRE *</label>
+                                             <input type="text" id="name" class="form-control"
+                                                formControlName="name" placeholder="Nombre" value=""
+                                                aria-invalid="false" />
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="conFrm.name.touched && conFrm.name.invalid">
+                                             El nombre es requerido
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- PUESTO -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="position">PUESTO *</label>
+                                             <input type="text" id="position" class="form-control"
+                                                formControlName="position" placeholder="Puesto" value=""
+                                                aria-invalid="false" />
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="conFrm.position.touched && conFrm.position.invalid">
+                                             El puesto es requerido
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- COMENTARIOS -->
+                                    <div class="col-md-6">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="comments">COMENTARIOS *</label>
+                                             <input type="text" id="comments" class="form-control"
+                                                formControlName="comments" placeholder="Comentarios" value=""
+                                                aria-invalid="false" />
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="conFrm.comments.touched && conFrm.comments.invalid">
+                                             El comentario es requerido
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- TELÉFONO FIJO -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="landLine">TELÉFONO FIJO *</label>
+                                             <input type="text" id="landLine" class="form-control"
+                                                formControlName="landLine" placeholder="Teléfono fijo" value=""
+                                                aria-invalid="false" maxlength="10" onlyNumbers />
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="( conFrm.landLine.touched || conFrm.landLine.dirty ) && conFrm.landLine.invalid">
+                                             El teléfono fijo es incorrecto o está vacío
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- TELÉFONO CELULAR -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="cellPhone">TELÉFONO CELULAR *</label>
+                                             <input type="text" id="cellPhone" class="form-control"
+                                                formControlName="cellPhone" placeholder="Teléfono celular" value=""
+                                                aria-invalid="false" maxlength="10" onlyNumbers/>
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="( conFrm.cellPhone.touched || conFrm.cellPhone.dirty ) && conFrm.cellPhone.invalid">
+                                             El teléfono celular es incorrecto o está vacío
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- EMAIL -->
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+                                          <div class="controls">
+                                             <label for="email">EMAIL *</label>
+                                             <input type="text" id="email" class="form-control"
+                                                formControlName="email" placeholder="Email" value=""
+                                                aria-invalid="false" />
+                                          </div>
+                                          <div class="text-danger fsize-sm"
+                                             *ngIf="( conFrm.email.touched || conFrm.email.dirty ) && conFrm.email.invalid">
+                                             El email es incorrecto o está vacío
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-md-3 d-flex justify-content-center align-items-center">
+                                       <button type="button" class="btn btn-secondary mt-1 fsize-sm w-100"
+                                          *ngIf="!flgEditContact" [disabled]="contactsForm.invalid"
+                                          (click)="saveContact()">
+                                          AGREGAR CONTACTO
+                                       </button>
+                                       <button type="button" class="btn btn-secondary mt-1 fsize-sm w-100"
+                                          *ngIf="flgEditContact" (click)="updateContact()">
+                                          ACTUALIZAR CONTACTO
+                                       </button>
+                                    </div>
+                                 </div>
+                              </form>
+                              <!-- Information form ends -->
+                           </div>
+                           <!-- Information content ends -->
+                        </ng-template>
+                     </li>
+                  </ul>
+                  <div class="tab-content">
+                     <div [ngbNavOutlet]="nav"></div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
