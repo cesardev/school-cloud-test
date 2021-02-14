@@ -14,21 +14,21 @@ import { NgbDate, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './detalle-corporativo.component.html',
   styles: [
     `
-    .table-detalle-corp {
+    .table-corp-detail {
       display: table !important;
     }
-    .table-detalle-corp thead tr th,
-    .table-detalle-corp tbody tr td {
+    .table-corp-detail thead tr th,
+    .table-corp-detail tbody tr td {
       font-size: 0.9rem;
       padding: 0.5rem 1rem;
     }
-    .table-detalle-corp thead tr th {
+    .table-corp-detail thead tr th {
       font-weight: 500;
       background-color: #ececec;
     }
 
     @media screen and ( max-width: 1245px ) {
-      .table-detalle-corp {
+      .table-corp-detail {
         display: block !important;
       }
     } 
@@ -66,7 +66,7 @@ export class DetalleCorporativoComponent implements OnInit {
       Validators.required, Validators.maxLength( 10 )
     ]),
     cellPhone: new FormControl( { value: '', disabled: false }, [
-      Validators.required
+      Validators.required, Validators.maxLength( 10 )
     ]),
     email: new FormControl( { value: '', disabled: false }, [
       Validators.required, Validators.pattern( this.emailPattern )
